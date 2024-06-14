@@ -2,7 +2,7 @@ package com.pokemonreview.api.controllers;
 
 import com.pokemonreview.api.dto.AuthResponseDTO;
 import com.pokemonreview.api.dto.LoginDto;
-import com.pokemonreview.api.dto.RegisterDto;
+import com.pokemonreview.api.dto.RegisterRequestDto;
 import com.pokemonreview.api.models.Role;
 import com.pokemonreview.api.models.UserEntity;
 import com.pokemonreview.api.repository.RoleRepository;
@@ -51,11 +51,13 @@ public class AuthController {
                 loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
-        return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
+        String role = authentication.getAuthorities().toString();
+        String result = role.substring(1, role.length() - 1);
+        return new ResponseEntity<>(new AuthResponseDTO(token,result), HttpStatus.OK);
     }
 
     @PostMapping("register")
-    public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
+    public ResponseEntity<String> register(@RequestBody RegisterRequestDto registerDto) {
         if (userRepository.existsByUsername(registerDto.getUsername())) {
             return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
         }
@@ -64,7 +66,7 @@ public class AuthController {
         user.setUsername(registerDto.getUsername());
         user.setPassword(passwordEncoder.encode((registerDto.getPassword())));
 
-        Role roles = roleRepository.findByName("USER").get();
+        Role roles = roleRepository.findByName("ADMIN").get();
         user.setRoles(Collections.singletonList(roles));
 
         userRepository.save(user);
