@@ -1,7 +1,6 @@
 package com.pokemonreview.api.repository;
 
-import com.pokemonreview.api.models.Pokemon;
-import com.pokemonreview.api.models.Review;
+import com.pokemonreview.api.entity.Review;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

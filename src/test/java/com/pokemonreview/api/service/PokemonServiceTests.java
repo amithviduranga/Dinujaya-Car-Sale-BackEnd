@@ -2,7 +2,7 @@ package com.pokemonreview.api.service;
 
 import com.pokemonreview.api.dto.PokemonDto;
 import com.pokemonreview.api.dto.PokemonResponse;
-import com.pokemonreview.api.models.Pokemon;
+import com.pokemonreview.api.entity.Pokemon;
 import com.pokemonreview.api.repository.PokemonRepository;
 import com.pokemonreview.api.service.impl.PokemonServiceImpl;
 import org.assertj.core.api.Assertions;
