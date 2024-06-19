@@ -23,7 +23,7 @@ public class VehicleController {
     private IVehicleService vehicleService;
 
     //Save vehicle details
-        @PostMapping("/saveVehicleDetails")
+    @PostMapping("/saveVehicleDetails")
     public Vehicle saveVehicleMainDetails(@RequestPart("vehicle") VehicleDataRequestDTO vehicleDto,
                                                      @RequestPart("mainImage") MultipartFile mainImage,
                                                      @RequestPart("images") List<MultipartFile> images){
@@ -65,6 +65,8 @@ public class VehicleController {
 
         return ResponseEntity.ok(vehicleService.getVehicleById(id));
     }
+
+
 
 
 }
