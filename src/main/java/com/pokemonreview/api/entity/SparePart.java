@@ -43,7 +43,7 @@ public class SparePart {
 
     private Date modifiedOn;
 
-    
+
     @Column(name = "created_by")
     private String createdBy;
     @Column(name = "modified_by")
