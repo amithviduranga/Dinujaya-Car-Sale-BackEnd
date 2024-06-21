@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "vehicle_spare_part_recommendation")
@@ -31,4 +32,15 @@ public class VehicleSparePartRecommendation {
 
     @Column(name = "recommendation_reason")
     private String recommendationReason;
+    @Column(name = "created_on")
+    private Date createdOn;
+
+    @Column(name = "modified_on")
+
+    private Date modifiedOn;
+
+    @Column(name = "created_by")
+    private String createdBy;
+    @Column(name = "modified_by")
+    private String modifiedBy;
 }

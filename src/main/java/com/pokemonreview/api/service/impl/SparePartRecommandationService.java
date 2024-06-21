@@ -12,6 +12,7 @@ import com.pokemonreview.api.service.ISparePartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,10 @@ public class SparePartRecommandationService implements ISparePartRecommandationS
             vehicleSparePartRecommendation.setSparePart(sparePart);
             vehicleSparePartRecommendation.setRecommendationMonth(requestDTO.getReccomondationMonths());
             vehicleSparePartRecommendation.setRecommendationReason(requestDTO.getRecommendationReason());
+            vehicleSparePartRecommendation.setCreatedOn(new Date());
+            vehicleSparePartRecommendation.setModifiedBy(null);
+            vehicleSparePartRecommendation.setModifiedOn(new Date());
+            vehicleSparePartRecommendation.setCreatedBy(null);
 
 
             // Assuming you have a repository to save the recommendation
