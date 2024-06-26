@@ -7,4 +7,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
 
     Object findAllById(long id);
+
+    Object findByCategory(String type);
 }

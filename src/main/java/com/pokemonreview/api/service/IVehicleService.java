@@ -14,4 +14,6 @@ public interface IVehicleService {
 
      Vehicle getVehicleById(long id);
 
+     List<Vehicle> getVehicleByType(String type);
+
 }

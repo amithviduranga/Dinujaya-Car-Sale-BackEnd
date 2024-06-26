@@ -41,6 +41,7 @@ public class VehicleController {
             vehicle.setFuelType(vehicleDto.getFuelType());
             vehicle.setVehicleCondition(vehicleDto.getCondition());
             vehicle.setDescription(vehicleDto.getDescription());
+            vehicle.setCategory(vehicleDto.getCategory());
             vehicle.setCreatedOn(new Date());
             vehicle.setModifiedOn(new Date());
             vehicle.setCreatedBy("amith1234"); // need  implement later
@@ -66,6 +67,12 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleService.getVehicleById(id));
     }
 
+ // Get Vehilces by Vehicle type
+    @GetMapping("/category")
+    public ResponseEntity<List<Vehicle>> getVehiclesByType(@RequestParam("type") String type){
+
+        return  ResponseEntity.ok(vehicleService.getVehicleByType(type));
+    }
 
 
 

@@ -51,6 +51,10 @@ public class Vehicle {
 
     @Column(name = "price")
     private Double price;
+
+    @Column(name = "category")
+    private String category;
+
     @Column(name = "created_on")
 
     private Date createdOn;

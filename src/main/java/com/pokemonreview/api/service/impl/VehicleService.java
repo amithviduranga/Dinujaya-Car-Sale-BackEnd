@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class VehicleService implements IVehicleService {
@@ -84,6 +86,21 @@ public class VehicleService implements IVehicleService {
         return vehicle;
     }
 
+   public List<Vehicle> getVehicleByType(String category){
+      // Retrieve Vehicle From its type from Database
+      List<Vehicle> vehiclesByType = vehicleRepository.findAll();
 
+       List <Vehicle>  filteredVehicles = vehiclesByType.stream()
+               .filter(vehicle -> category.equalsIgnoreCase(vehicle.getCategory()))
+               .collect(Collectors.toList());
+
+      if(filteredVehicles!=null) {
+          Collections.reverse(vehiclesByType);
+          return filteredVehicles;
+      }else{
+
+          return new ArrayList<>();
+      }
+   }
 
 }
