@@ -16,10 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 
@@ -56,8 +53,8 @@ public class AuthController {
         return new ResponseEntity<>(new AuthResponseDTO(token,result), HttpStatus.OK);
     }
 
-    @PostMapping("register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequestDto registerDto) {
+    @PostMapping("register/{roleId}")
+    public ResponseEntity<String> register(@RequestBody RegisterRequestDto registerDto , @PathVariable(required = true) int roleId) {
         if (userRepository.existsByUsername(registerDto.getUsername())) {
             return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
         }
@@ -66,7 +63,7 @@ public class AuthController {
         user.setUsername(registerDto.getUsername());
         user.setPassword(passwordEncoder.encode((registerDto.getPassword())));
 
-        Role roles = roleRepository.findByName("ADMIN").get();
+        Role roles = roleRepository.findById(roleId).get();
         user.setRoles(Collections.singletonList(roles));
 
         userRepository.save(user);

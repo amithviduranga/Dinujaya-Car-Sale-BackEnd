@@ -55,6 +55,15 @@ public class Vehicle {
     @Column(name = "category")
     private String category;
 
+    @Column(name = "modelURL")
+    private String modelURL;
+
+    @Column(name = "registeredYear")
+    private String registeredYear;
+
+    @Column(name = "listingType")
+    private int listingType;
+
     @Column(name = "created_on")
 
     private Date createdOn;
