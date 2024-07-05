@@ -9,4 +9,10 @@ import java.util.List;
 public interface IAdvertiesmentService {
 
     Advertiesment createAdvertiesment(Advertiesment advertiesment, List<MultipartFile> images, MultipartFile mainImage);
+
+    List<Advertiesment> getAllAdvertiesments();
+
+    boolean changePaymentStatus(Long id);
+
+    boolean updateStatus(Long id,String order);
 }

@@ -75,6 +75,12 @@ public class Advertiesment {
     @Column(name = "contact_no")
     private String contactNo;
 
+    @Column(name = "payment")
+    private String payment;
+
+    @Column(name = "status")
+    private int status;
+
     @OneToMany(mappedBy = "advertiesment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<AdvertiesmentImage> images = new HashSet<>();

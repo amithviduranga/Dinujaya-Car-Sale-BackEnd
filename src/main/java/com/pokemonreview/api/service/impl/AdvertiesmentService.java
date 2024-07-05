@@ -1,5 +1,6 @@
 package com.pokemonreview.api.service.impl;
 
+import com.pokemonreview.api.dto.VehicleDataRequestDTO;
 import com.pokemonreview.api.entity.Advertiesment;
 import com.pokemonreview.api.entity.AdvertiesmentImage;
 import com.pokemonreview.api.entity.Vehicle;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -64,6 +67,52 @@ public class AdvertiesmentService implements IAdvertiesmentService {
         }
 
         return savedAdvertiesment;
+
+    }
+
+    public List<Advertiesment> getAllAdvertiesments(){
+        // Retrieve all vehivles from database
+        List<Advertiesment> allAdvertiesments = advertiesmentRepository.findAll();
+        Collections.reverse(allAdvertiesments);
+        return allAdvertiesments;
+    }
+    @Override
+    public boolean changePaymentStatus(Long id) {
+        Optional<Advertiesment> advertiesmentOptional = advertiesmentRepository.findById(id);
+        try {
+            if (advertiesmentOptional.isPresent()) {
+                Advertiesment advertiesment = advertiesmentOptional.get();
+                advertiesment.setPayment("success");
+                advertiesmentRepository.save(advertiesment);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception ex) {
+
+            return false;
+        }
+    }
+        @Override
+        public boolean updateStatus(Long id,String order){
+            Optional<Advertiesment> advertiesmentOptional = advertiesmentRepository.findById(id);
+            try {
+                if (advertiesmentOptional.isPresent()) {
+                    Advertiesment advertiesment = advertiesmentOptional.get();
+                    if(order.equals("accept")) {
+                        advertiesment.setStatus(1);
+                    }else if(order.equals("reject")) {
+                        advertiesment.setStatus(2);
+                    }
+                    advertiesmentRepository.save(advertiesment);
+                    return true;
+                } else {
+                    return false;
+                }
+            }catch (Exception ex){
+
+                return false;
+            }
 
     }
 }
