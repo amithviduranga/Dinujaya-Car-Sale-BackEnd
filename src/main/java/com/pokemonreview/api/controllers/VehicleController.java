@@ -42,6 +42,7 @@ public class VehicleController {
             vehicle.setVehicleCondition(vehicleDto.getCondition());
             vehicle.setDescription(vehicleDto.getDescription());
             vehicle.setCategory(vehicleDto.getCategory());
+            vehicle.setModelURL(vehicleDto.getModelURL());
             vehicle.setCreatedOn(new Date());
             vehicle.setModifiedOn(new Date());
             vehicle.setCreatedBy("amith1234"); // need  implement later

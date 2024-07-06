@@ -19,6 +19,7 @@ public class SaveVehicleRequestDTO {
     private String price;
     private String color;
     private String condition;
+    private String modelURL;
     private String fuelType;
     private String description;
 

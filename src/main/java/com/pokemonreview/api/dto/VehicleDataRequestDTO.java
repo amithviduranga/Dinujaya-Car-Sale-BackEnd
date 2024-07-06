@@ -16,6 +16,7 @@ public class VehicleDataRequestDTO {
     private String color;
     private String fuelType;
     private String condition;
+    private String modelURL;
     private String description;
     private String category;
 }
