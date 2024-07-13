@@ -20,8 +20,8 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
         with:
           registry: public.ecr.aws/m4g6d8m4/amithecr
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           registry-type: public
           mask-password: true
           skip-logout: false
