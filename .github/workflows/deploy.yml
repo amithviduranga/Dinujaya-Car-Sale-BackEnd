@@ -41,4 +41,4 @@ jobs:
         run: |
           mkdir -p $HOME/.kube
           echo "$KUBE_CONFIG_DATA" | base64 --decode > $HOME/.kube/config
-          kubectl --kubeconfig=$HOME/.kube/config apply -f dinujayabackendapi.yaml
+          kubectl --kubeconfig=$HOME/.kube/config apply -f deployment/main.yaml
