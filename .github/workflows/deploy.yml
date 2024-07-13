@@ -1,0 +1,39 @@
+name: Deploy to Amazon EKS
+
+on:
+  push:
+    branches:
+      - master  # Adjust branch name as needed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry: public.ecr.aws/m4g6d8m4/amithecr
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
+          
+      - name: Build and push Docker image
+        env:
+          ECR_REGISTRY: YOUR_ECR_REGISTRY_URL
+        run: |
+          docker build -t $ECR_REGISTRY/dinujaya-car-sale-backend-service:latest .
+          docker push $ECR_REGISTRY/dinujaya-car-sale-backend-service:latest
+          
+      - name: Update Kubernetes Deployment
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        run: |
+          echo "$KUBE_CONFIG_DATA" > kubeconfig
+          kubectl --kubeconfig=./kubeconfig apply -f deploy.yaml
