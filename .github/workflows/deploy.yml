@@ -3,7 +3,7 @@ name: Deploy to Amazon EKS
 on:
   push:
     branches:
-      - master  # Adjust  branch name as needed
+      - master  # Adjust branch name as needed
 
 jobs:
   deploy:
@@ -20,16 +20,14 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
         with:
           registry: 339712876338.dkr.ecr.eu-north-1.amazonaws.com/amithecrprivate
-          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
-          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           registry-type: public
-          mask-password: true
-          skip-logout: false
-          aws-region: eu-north-1
 
       - name: Build and push Docker image
         env:
           ECR_REGISTRY: 339712876338.dkr.ecr.eu-north-1.amazonaws.com/amithecrprivate
+          AWS_REGION: eu-north-1
         run: |
           docker build -t $ECR_REGISTRY/dinujayacarsaleapi:latest .
           docker push $ECR_REGISTRY/dinujayacarsaleapi:latest
