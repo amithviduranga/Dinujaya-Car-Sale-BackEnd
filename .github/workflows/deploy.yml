@@ -17,17 +17,16 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Login to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          registry: 339712876338.dkr.ecr.eu-north-1.amazonaws.com/amithecrprivate
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          registry-type: private
-          aws-region: ${{ secrets.AWS_REGION }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 339712876338.dkr.ecr.$AWS_REGION.amazonaws.com/amithecrprivate
+
       - name: Build and push Docker image
         env:
           ECR_REGISTRY: 339712876338.dkr.ecr.eu-north-1.amazonaws.com/amithecrprivate
-
         run: |
           docker build -t $ECR_REGISTRY/dinujayacarsaleapi:latest .
           docker push $ECR_REGISTRY/dinujayacarsaleapi:latest
