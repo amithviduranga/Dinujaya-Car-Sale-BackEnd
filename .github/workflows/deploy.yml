@@ -22,12 +22,12 @@ jobs:
           registry: 339712876338.dkr.ecr.eu-north-1.amazonaws.com/amithecrprivate
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          registry-type: public
+          registry-type: private
 
       - name: Build and push Docker image
         env:
           ECR_REGISTRY: 339712876338.dkr.ecr.eu-north-1.amazonaws.com/amithecrprivate
-          AWS_REGION: eu-north-1
+          AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           docker build -t $ECR_REGISTRY/dinujayacarsaleapi:latest .
           docker push $ECR_REGISTRY/dinujayacarsaleapi:latest
