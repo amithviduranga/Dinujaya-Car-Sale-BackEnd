@@ -24,6 +24,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           registry-type: private
           aws-region: eu-north-1
+          mask-password: true
+          skip-logout: false
+
       - name: Build and push Docker image
         env:
           ECR_REGISTRY: 339712876338.dkr.ecr.eu-north-1.amazonaws.com/amithecrprivate
