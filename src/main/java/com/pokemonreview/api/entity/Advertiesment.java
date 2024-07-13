@@ -1,5 +1,6 @@
 package com.pokemonreview.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
@@ -84,4 +85,13 @@ public class Advertiesment {
     @OneToMany(mappedBy = "advertiesment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<AdvertiesmentImage> images = new HashSet<>();
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
+
+    @OneToOne(mappedBy = "advertiesment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private AdvertiesmentStatus advertiesmentStatus;
 }
