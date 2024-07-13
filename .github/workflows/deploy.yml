@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master  # Adjust branch name as needed
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -17,12 +18,15 @@ jobs:
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
-
+        with:
+          registry: 339712876338.dkr.ecr.eu-north-1.amazonaws.com/amithecrprivate
+          aws-region: eu-north-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Build and push Docker image
         env:
           ECR_REGISTRY: 339712876338.dkr.ecr.eu-north-1.amazonaws.com/amithecrprivate
-
         run: |
           docker build -t $ECR_REGISTRY/dinujayacarsaleapi:latest .
           docker push $ECR_REGISTRY/dinujayacarsaleapi:latest
