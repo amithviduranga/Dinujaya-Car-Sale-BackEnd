@@ -116,7 +116,7 @@ public class AdvertiesmentService implements IAdvertiesmentService {
             try {
                     if(order.equals("accept")) {
                         advertiesment.setStatus(1);
-                        String Subject = advertiesment.getModelName() +" "+ advertiesment.getBrandName()+"Advertiesment - "+"SUCCESS";
+                        String Subject = "Dinujaya Car Sale Advertiesment | "+advertiesment.getModelName() +" "+ advertiesment.getBrandName()+" - SUCCESS";
                         String successMessage = "Your Advertiesment has been Approved By the Dinujaya Car Sale.";
                         emailService.sendEmail(advertiesment.getUser().getEmail(),Subject,successMessage );
                     }else if(order.equals("reject")) {

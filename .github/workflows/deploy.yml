@@ -28,12 +28,12 @@ jobs:
         env:
           ECR_REGISTRY: public.ecr.aws/m4g6d8m4/amithecr
         run: |
-          docker build -t $ECR_REGISTRY/dinujaya-car-sale-backend-service:latest .
-          docker push $ECR_REGISTRY/dinujaya-car-sale-backend-service:latest
+          docker build -t $ECR_REGISTRY/dinujayacarsaleapi:latest .
+          docker push $ECR_REGISTRY/dinujayacarsaleapi:latest
           
       - name: Update Kubernetes Deployment
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-       run: |
+        run: |
           echo "$KUBE_CONFIG_DATA" | base64 --decode > $HOME/.kube/config
           kubectl --kubeconfig=$HOME/.kube/config apply -f springboot-app-deployment.yaml
