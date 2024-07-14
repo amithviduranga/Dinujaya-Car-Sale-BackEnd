@@ -43,6 +43,17 @@ public class AuthController {
         this.jwtGenerator = jwtGenerator;
     }
 
+    @PostMapping("/createRole")
+    public ResponseEntity<Role> createRole(@RequestBody Role requestDTO){
+
+        Role role = new Role();
+
+        role.setName(requestDTO.getName());
+        Role createdRole = roleRepository.save(role);
+
+        return new ResponseEntity<>(createdRole, HttpStatus.OK);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(
