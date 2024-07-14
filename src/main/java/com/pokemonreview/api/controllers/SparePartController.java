@@ -23,6 +23,7 @@ public class SparePartController {
     @PostMapping("/saveSparePart")
     public SparePart saveSparePart(@RequestBody() SpareParsRequestDTO request){
 
+
         SparePart savedSparepart = sparePartService.saveSparePart(request);
 
         return savedSparepart;
