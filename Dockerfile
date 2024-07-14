@@ -5,7 +5,7 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
 # Copy your application files to the container
-COPY ./ ./
+COPY target/api-0.0.1-SNAPSHOT.jar api.jar
 
 EXPOSE 8080
 
