@@ -5,9 +5,9 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
 # Copy your application files to the container
-COPY  target/dinujaya-car-sale-api.jar dinujaya-car-sale-api.jar
+COPY  target/api.jar api.jar
 
 EXPOSE 8080
 
 # Command to run your Spring Boot application when the container starts
-CMD ["java", "-jar", "dinujaya-car-sale-api.jar"]
+CMD ["java", "-jar", "api.jar"]
