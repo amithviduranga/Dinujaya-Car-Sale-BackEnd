@@ -27,6 +27,7 @@ jobs:
         with:
           registry-type: private
       - name: Build, tag, and push image to Amazon ECR
+        id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: amithecrprivate
@@ -34,11 +35,20 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image="$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      - name: Update Kubernetes Deployment
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-        run: |
-          mkdir -p $HOME/.kube
-          echo "$KUBE_CONFIG_DATA" | base64 --decode > $HOME/.kube/config
-          kubectl --kubeconfig=$HOME/.kube/config apply -f main.yaml
+      - name: Fill in the new Image ID in the Amazon ECS Task Definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+           task-definition: dinujaya-car-sale-task-definition.json
+           container-name: dinujaya-Car-Sale
+           image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+            task-definition: ${{ steps.task-def.outputs.task-definition }}
+            service: DCRSApi-service
+            cluster: DevCluster2
+            wait-for-service-stability: true
