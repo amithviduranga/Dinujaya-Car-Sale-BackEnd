@@ -50,5 +50,5 @@ jobs:
         with:
             task-definition: ${{ steps.task-def.outputs.task-definition }}
             service: DCRSApi-service
-            cluster: DevCluster2
+            cluster: devCluster2
             wait-for-service-stability: true
