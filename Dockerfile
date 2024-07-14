@@ -6,8 +6,6 @@ WORKDIR /app
 
 # Copy your application files to the container
 COPY ./ ./
-# package our application code
-RUN mvn clean package
 
 EXPOSE 8080
 
