@@ -8,6 +8,7 @@ import com.pokemonreview.api.entity.UserEntity;
 import com.pokemonreview.api.repository.RoleRepository;
 import com.pokemonreview.api.repository.UserRepository;
 import com.pokemonreview.api.security.JWTGenerator;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.rmi.NoSuchObjectException;
 import java.util.Collections;
 
 @RestController
@@ -29,6 +31,7 @@ public class AuthController {
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
     private JWTGenerator jwtGenerator;
+    private Exception RuntimeException;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
@@ -38,6 +41,17 @@ public class AuthController {
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtGenerator = jwtGenerator;
+    }
+
+    @PostMapping("/createRole")
+    public ResponseEntity<Role> createRole(@RequestBody Role requestDTO){
+
+        Role role = new Role();
+
+        role.setName(requestDTO.getName());
+        Role createdRole = roleRepository.save(role);
+
+        return new ResponseEntity<>(createdRole, HttpStatus.OK);
     }
 
     @PostMapping("/login")
@@ -58,10 +72,14 @@ public class AuthController {
         if (userRepository.existsByUsername(registerDto.getUsername())) {
             return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
         }
-
         UserEntity user = new UserEntity();
         user.setUsername(registerDto.getUsername());
         user.setPassword(passwordEncoder.encode((registerDto.getPassword())));
+        user.setAddress(registerDto.getAddress());
+        user.setEmail(registerDto.getEmail());
+        user.setFirstName(registerDto.getFirstName());
+        user.setLastName(registerDto.getLastName());
+        user.setMobile(registerDto.getMobile());
 
         Role roles = roleRepository.findById(roleId).get();
         user.setRoles(Collections.singletonList(roles));
@@ -70,4 +88,18 @@ public class AuthController {
 
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
+
+    @GetMapping("userDetails/{userName}")
+    public ResponseEntity<?> getUserDetailsByUserName(@PathVariable("userName") String userName){
+        UserEntity user = null;
+        try{
+            user = userRepository.findByUsername(userName).get();
+
+        }catch (Exception ex){
+
+          throw  ex;
+        }
+      return  ResponseEntity.ok(user);
+    }
+
 }

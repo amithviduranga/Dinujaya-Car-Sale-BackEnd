@@ -21,10 +21,12 @@ public class AdvertiesmentsController {
     @Autowired
     private IAdvertiesmentService advertiesmentService;
 
-    @PostMapping("/createAdvertiesment")
+
+    @PostMapping("/createAdvertiesment/{userId}")
     public Advertiesment saveVehicleMainDetails(@RequestPart("advertiesment") Advertiesment vehicleDto,
                                           @RequestPart("mainImage") MultipartFile mainImage,
-                                          @RequestPart("images") List<MultipartFile> images) {
+                                          @RequestPart("images") List<MultipartFile> images,
+                                                @PathVariable("userId") int userId) {
 
 
         Advertiesment vehicle = new Advertiesment();
@@ -49,13 +51,12 @@ public class AdvertiesmentsController {
         vehicle.setStatus(vehicleDto.getStatus());
         vehicle.setCreatedOn(new Date());
         vehicle.setModifiedOn(new Date());
-        vehicle.setCreatedBy("amith1234"); // need  implement later
         vehicle.setModifiedBy(null);
 
 
-        Advertiesment savedAdvertiesment = advertiesmentService.createAdvertiesment(vehicle, images, mainImage);
+        Advertiesment savedAdvertiesment = advertiesmentService.createAdvertiesment(vehicle, images, mainImage ,userId);
 
-        return savedAdvertiesment;
+       return savedAdvertiesment;
     }
     @GetMapping("/getAllAdvertiesments")
     public ResponseEntity<List<Advertiesment>> getAllListedVehicles(){
@@ -69,9 +70,9 @@ public class AdvertiesmentsController {
         boolean value = advertiesmentService.changePaymentStatus(id);
         return value;
     }
-    @PostMapping("updateStatus/{id}")
-    public boolean updateStatus(@PathVariable(required = true)Long id,@RequestParam(required = true) String order){
-        boolean value = advertiesmentService.updateStatus(id,order);
+    @PostMapping("updateStatus/{id}/{status}")
+    public boolean updateStatus(@PathVariable(required = true)Long id,@PathVariable(required = true) String status, @RequestBody(required = false) String rejectReason){
+        boolean value = advertiesmentService.updateStatus(id,status,rejectReason);
         return value;
     }
 

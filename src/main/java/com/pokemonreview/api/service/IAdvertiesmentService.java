@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface IAdvertiesmentService {
 
-    Advertiesment createAdvertiesment(Advertiesment advertiesment, List<MultipartFile> images, MultipartFile mainImage);
+    Advertiesment createAdvertiesment(Advertiesment advertiesment, List<MultipartFile> images, MultipartFile mainImage,int userId);
 
     List<Advertiesment> getAllAdvertiesments();
 
     boolean changePaymentStatus(Long id);
 
-    boolean updateStatus(Long id,String order);
+    boolean updateStatus(Long id,String order,String rejectReason);
 }

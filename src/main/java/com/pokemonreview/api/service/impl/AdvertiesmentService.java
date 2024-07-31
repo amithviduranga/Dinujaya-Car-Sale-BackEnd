@@ -1,13 +1,8 @@
 package com.pokemonreview.api.service.impl;
 
 import com.pokemonreview.api.dto.VehicleDataRequestDTO;
-import com.pokemonreview.api.entity.Advertiesment;
-import com.pokemonreview.api.entity.AdvertiesmentImage;
-import com.pokemonreview.api.entity.Vehicle;
-import com.pokemonreview.api.entity.VehicleImage;
-import com.pokemonreview.api.repository.AdvertiesmentIamgeRepository;
-import com.pokemonreview.api.repository.AdvertiesmentRepository;
-import com.pokemonreview.api.repository.VehicleRepository;
+import com.pokemonreview.api.entity.*;
+import com.pokemonreview.api.repository.*;
 import com.pokemonreview.api.service.IAdvertiesmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,10 +21,27 @@ public class AdvertiesmentService implements IAdvertiesmentService {
     AdvertiesmentRepository advertiesmentRepository;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     AdvertiesmentIamgeRepository advertiesmentIamgeRepository;
 
-    public Advertiesment createAdvertiesment(Advertiesment advertiesment, List<MultipartFile> images, MultipartFile mainImage){
+    @Autowired
+    AdvertiesmentStatusRepository advertiesmentStatusRepository;
 
+    @Autowired
+    EmailService emailService;
+
+    public Advertiesment createAdvertiesment(Advertiesment advertiesment, List<MultipartFile> images, MultipartFile mainImage,int userId){
+
+        try {
+
+
+        //Retrieve User by user Id
+
+        UserEntity user = userRepository.findById(userId);
+        advertiesment.setUser(user);
+        advertiesment.setCreatedBy(user.getUsername());
         //Save vehicle main data
         Advertiesment savedAdvertiesment  =  advertiesmentRepository.save(advertiesment);
 
@@ -67,7 +79,9 @@ public class AdvertiesmentService implements IAdvertiesmentService {
         }
 
         return savedAdvertiesment;
-
+        }catch (Exception ex){
+            throw ex;
+        }
     }
 
     public List<Advertiesment> getAllAdvertiesments(){
@@ -94,21 +108,29 @@ public class AdvertiesmentService implements IAdvertiesmentService {
         }
     }
         @Override
-        public boolean updateStatus(Long id,String order){
-            Optional<Advertiesment> advertiesmentOptional = advertiesmentRepository.findById(id);
+        public boolean updateStatus(Long id,String order,String rejectReason){
+            Advertiesment advertiesment = advertiesmentRepository.findById(id).get();
+
+
+
             try {
-                if (advertiesmentOptional.isPresent()) {
-                    Advertiesment advertiesment = advertiesmentOptional.get();
                     if(order.equals("accept")) {
                         advertiesment.setStatus(1);
+                        String Subject = "Dinujaya Car Sale Advertiesment | "+advertiesment.getModelName() +" "+ advertiesment.getBrandName()+" - SUCCESS";
+                        String successMessage = "Your Advertiesment has been Approved By the Dinujaya Car Sale.";
+                        emailService.sendEmail(advertiesment.getUser().getEmail(),Subject,successMessage );
                     }else if(order.equals("reject")) {
                         advertiesment.setStatus(2);
                     }
+
                     advertiesmentRepository.save(advertiesment);
+
+                AdvertiesmentStatus status =new AdvertiesmentStatus();
+                status.setRejectReason(rejectReason);
+                status.setEmailSentFlag(true);
+                status.setAdvertiesment(advertiesment);
+                AdvertiesmentStatus advertiesmentStats= advertiesmentStatusRepository.save(status);
                     return true;
-                } else {
-                    return false;
-                }
             }catch (Exception ex){
 
                 return false;
