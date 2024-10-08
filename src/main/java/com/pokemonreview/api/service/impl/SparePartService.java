@@ -6,10 +6,13 @@ import com.pokemonreview.api.entity.SparePart;
 import com.pokemonreview.api.repository.SparePartRepository;
 import com.pokemonreview.api.service.ISparePartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SparePartService implements ISparePartService {
@@ -64,5 +67,27 @@ public class SparePartService implements ISparePartService {
         SparePart updatedSparePart = sparePartRepository.save(retrievedSparePart);
 
         return  updatedSparePart;
+    }
+    
+    @Override
+    public ResponseEntity<?> deleteSaprePart(Long id){
+        try {
+            // Check if the spare part exists
+            Optional<SparePart> sparePartOptional = sparePartRepository.findById(id);
+
+            if (sparePartOptional.isPresent()) {
+                // If it exists, delete the spare part
+                sparePartRepository.deleteById(id);
+                // Return a success response
+                return ResponseEntity.ok().body("Spare part deleted successfully");
+            } else {
+                // If the spare part doesn't exist, return a not found response
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Spare part not found");
+            }
+        } catch (Exception e) {
+            // Handle any exceptions and return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error occurred while deleting spare part");
+        }
     }
 }

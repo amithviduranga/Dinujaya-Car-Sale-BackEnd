@@ -45,5 +45,10 @@ public class SparePartController {
 
     }
 
+    @DeleteMapping("/DeleteSaprePart/{id}")
+    public ResponseEntity<?> deleteSaprepart(@PathVariable Long id) {
+        return sparePartService.deleteSaprePart(id);
+    }
+
 
 }

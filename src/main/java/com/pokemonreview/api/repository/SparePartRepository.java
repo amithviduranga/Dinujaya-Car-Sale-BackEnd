@@ -8,4 +8,5 @@ public interface SparePartRepository extends JpaRepository<SparePart, Long> {
 
 
     Object findAllById(long id);
+
 }
