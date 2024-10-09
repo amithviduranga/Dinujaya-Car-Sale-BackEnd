@@ -72,13 +72,9 @@ public class Vehicle {
 
     private Date modifiedOn;
 
-    @Column(name = "latitude")
-    private float latitude;
-    @Column(name = "longitude")
-    private float longitude;
 
     @Column(name = "selectedyard")
-    private String selectedYimpemard;
+    private String selectedYard;
 
     @Column(name = "created_by")
     private String createdBy;

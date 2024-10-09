@@ -43,8 +43,6 @@ public class VehicleController {
             vehicle.setDescription(vehicleDto.getDescription());
             vehicle.setCategory(vehicleDto.getCategory());
             vehicle.setModelURL(vehicleDto.getModelURL());
-            vehicle.setLatitude(vehicleDto.getLatitude());
-            vehicle.setLongitude(vehicleDto.getLongitude());
             vehicle.setSelectedYard(vehicleDto.getSelectedYard());
             vehicle.setCreatedOn(new Date());
             vehicle.setModifiedOn(new Date());
