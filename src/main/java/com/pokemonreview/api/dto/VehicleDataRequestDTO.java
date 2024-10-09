@@ -19,4 +19,7 @@ public class VehicleDataRequestDTO {
     private String modelURL;
     private String description;
     private String category;
+    private float latitude;
+    private float longitude;
+    private String  selectedYard;
 }
