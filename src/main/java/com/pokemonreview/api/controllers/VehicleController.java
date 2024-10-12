@@ -6,6 +6,7 @@ import com.pokemonreview.api.dto.VehicleDataRequestDTO;
 import com.pokemonreview.api.entity.Vehicle;
 import com.pokemonreview.api.service.IVehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -74,6 +75,16 @@ public class VehicleController {
     public ResponseEntity<List<Vehicle>> getVehiclesByType(@RequestParam("type") String type){
 
         return  ResponseEntity.ok(vehicleService.getVehicleByType(type));
+    }
+    // Delete Listed vehicle
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteVehicle(@PathVariable("id") Long id) {
+        boolean isDeleted = vehicleService.deleteVehicle(id);
+        if (isDeleted) {
+            return ResponseEntity.ok("Vehicle and associated images deleted successfully.");
+        } else {
+            return ResponseEntity.status(404).body("Vehicle not found.");
+        }
     }
 
 

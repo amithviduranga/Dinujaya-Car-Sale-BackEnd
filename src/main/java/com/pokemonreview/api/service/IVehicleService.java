@@ -16,4 +16,7 @@ public interface IVehicleService {
 
      List<Vehicle> getVehicleByType(String type);
 
+     boolean deleteVehicle(Long id);
+
+
 }

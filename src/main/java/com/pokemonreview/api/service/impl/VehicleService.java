@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -102,5 +103,17 @@ public class VehicleService implements IVehicleService {
           return new ArrayList<>();
       }
    }
+
+    @Override
+    public boolean deleteVehicle(Long id) {
+        // Check if the vehicle exists
+        Optional<Vehicle> vehicleOptional = vehicleRepository.findById(id);
+        if (vehicleOptional.isPresent()) {
+            // If exists, delete the vehicle (and related images due to CascadeType.ALL)
+            vehicleRepository.delete(vehicleOptional.get());
+            return true;
+        }
+        return false;
+    }
 
 }
