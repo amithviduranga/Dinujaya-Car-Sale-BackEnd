@@ -21,5 +21,6 @@ public class VehicleDataRequestDTO {
     private String category;
     private float latitude;
     private float longitude;
+    //Selected yard
     private String  selectedYard;
 }
