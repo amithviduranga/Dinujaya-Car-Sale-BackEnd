@@ -72,6 +72,9 @@ public class Vehicle {
 
     private Date modifiedOn;
 
+    @Column(name = "sold")
+    private boolean sold;
+
 
     @Column(name = "selectedyard")
     private String selectedYard;
@@ -89,4 +92,7 @@ public class Vehicle {
     @JsonManagedReference
     private Set<VehicleImage> images = new HashSet<>();
 
+    @OneToOne(mappedBy = "vehicle", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Customer customer;
 }
