@@ -1,5 +1,6 @@
 package com.pokemonreview.api.controllers;
 
+import com.pokemonreview.api.dto.UpdateAddStatusReqDTO;
 import com.pokemonreview.api.dto.VehicleDataRequestDTO;
 import com.pokemonreview.api.entity.Advertiesment;
 import com.pokemonreview.api.entity.Vehicle;
@@ -71,8 +72,8 @@ public class AdvertiesmentsController {
         return value;
     }
     @PostMapping("updateStatus/{id}/{status}")
-    public boolean updateStatus(@PathVariable(required = true)Long id,@PathVariable(required = true) String status, @RequestBody(required = false) String rejectReason){
-        boolean value = advertiesmentService.updateStatus(id,status,rejectReason);
+    public boolean updateStatus(@PathVariable(required = true)Long id,@PathVariable(required = true) String status, @RequestBody(required = false) UpdateAddStatusReqDTO request){
+        boolean value = advertiesmentService.updateStatus(id,status,request);
         return value;
     }
 

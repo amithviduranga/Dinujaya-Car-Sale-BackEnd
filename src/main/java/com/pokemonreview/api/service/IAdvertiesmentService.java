@@ -1,5 +1,6 @@
 package com.pokemonreview.api.service;
 
+import com.pokemonreview.api.dto.UpdateAddStatusReqDTO;
 import com.pokemonreview.api.entity.Advertiesment;
 import com.pokemonreview.api.entity.Vehicle;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,5 +15,5 @@ public interface IAdvertiesmentService {
 
     boolean changePaymentStatus(Long id);
 
-    boolean updateStatus(Long id,String order,String rejectReason);
+    boolean updateStatus(Long id, String order, UpdateAddStatusReqDTO request);
 }

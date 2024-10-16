@@ -1,5 +1,6 @@
 package com.pokemonreview.api.service.impl;
 
+import com.pokemonreview.api.dto.UpdateAddStatusReqDTO;
 import com.pokemonreview.api.dto.VehicleDataRequestDTO;
 import com.pokemonreview.api.entity.*;
 import com.pokemonreview.api.repository.*;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -108,7 +110,7 @@ public class AdvertiesmentService implements IAdvertiesmentService {
         }
     }
         @Override
-        public boolean updateStatus(Long id,String order,String rejectReason){
+        public boolean updateStatus(Long id, String order, UpdateAddStatusReqDTO request){
             Advertiesment advertiesment = advertiesmentRepository.findById(id).get();
 
 
@@ -116,17 +118,21 @@ public class AdvertiesmentService implements IAdvertiesmentService {
             try {
                     if(order.equals("accept")) {
                         advertiesment.setStatus(1);
+                        advertiesment.setModifiedBy(request.getModifiedBy());
+                        advertiesment.setModifiedOn(new Date());
                         String Subject = "Dinujaya Car Sale Advertiesment | "+advertiesment.getModelName() +" "+ advertiesment.getBrandName()+" - SUCCESS";
                         String successMessage = "Your Advertiesment has been Approved By the Dinujaya Car Sale.";
                         emailService.sendEmail(advertiesment.getUser().getEmail(),Subject,successMessage );
                     }else if(order.equals("reject")) {
                         advertiesment.setStatus(2);
+                        advertiesment.setModifiedBy(request.getModifiedBy());
+                        advertiesment.setModifiedOn(new Date());
                     }
 
                     advertiesmentRepository.save(advertiesment);
 
                 AdvertiesmentStatus status =new AdvertiesmentStatus();
-                status.setRejectReason(rejectReason);
+                status.setRejectReason(request.getRejectReason());
                 status.setEmailSentFlag(true);
                 status.setAdvertiesment(advertiesment);
                 AdvertiesmentStatus advertiesmentStats= advertiesmentStatusRepository.save(status);
