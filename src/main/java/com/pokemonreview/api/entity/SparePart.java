@@ -46,6 +46,13 @@ public class SparePart {
     private String createdBy;
     @Column(name = "modified_by")
     private String modifiedBy;
+    @Lob
+    @Column(name = "image")// Use @Lob to indicate that this field will store large binary data
+    private byte[] image;
+    @Column(name = "fileTpe")
+    private String fileType;
+
+
 
     @OneToMany(mappedBy = "sparePart", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonIgnore

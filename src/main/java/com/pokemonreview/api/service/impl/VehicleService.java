@@ -83,7 +83,6 @@ public class VehicleService implements IVehicleService {
         // Retrieve  vehivle by id  from database
         Vehicle vehicle = (Vehicle) vehicleRepository.findAllById(id);
 
-
         return vehicle;
     }
 

@@ -47,7 +47,7 @@ public class VehicleController {
             vehicle.setSelectedYard(vehicleDto.getSelectedYard());
             vehicle.setCreatedOn(new Date());
             vehicle.setModifiedOn(new Date());
-            vehicle.setCreatedBy("amith1234"); // need  implement later
+            vehicle.setCreatedBy(""); // need  implement later
             vehicle.setModifiedBy(null);
 
 

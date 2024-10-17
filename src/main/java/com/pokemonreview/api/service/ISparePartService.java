@@ -2,6 +2,7 @@ package com.pokemonreview.api.service;
 
 import com.pokemonreview.api.dto.SpareParsRequestDTO;
 import com.pokemonreview.api.dto.SparePartUpdateRequest;
+import com.pokemonreview.api.dto.responseDTO.SparePartResponseDTO;
 import com.pokemonreview.api.entity.SparePart;
 import org.springframework.http.ResponseEntity;
 
@@ -11,7 +12,7 @@ public interface ISparePartService {
 
      SparePart saveSparePart(SpareParsRequestDTO requestDTO);
 
-     List<SparePart> getAllSpareParts();
+     List<SparePartResponseDTO> getAllSpareParts();
 
      SparePart updateSparePart(SparePartUpdateRequest updateRequest,Long id);
 

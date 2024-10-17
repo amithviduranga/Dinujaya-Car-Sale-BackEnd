@@ -2,6 +2,7 @@ package com.pokemonreview.api.service.impl;
 
 import com.pokemonreview.api.dto.SpareParsRequestDTO;
 import com.pokemonreview.api.dto.SparePartUpdateRequest;
+import com.pokemonreview.api.dto.responseDTO.SparePartResponseDTO;
 import com.pokemonreview.api.entity.SparePart;
 import com.pokemonreview.api.repository.SparePartRepository;
 import com.pokemonreview.api.service.ISparePartService;
@@ -9,10 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SparePartService implements ISparePartService {
@@ -36,17 +41,43 @@ public class SparePartService implements ISparePartService {
         sparePart.setModifiedOn(new Date());
         sparePart.setModifiedBy(null);
 
+        MultipartFile imageFile = requestDTO.getImage();
+        if (imageFile != null && !imageFile.isEmpty()) {
+            byte[] imageData = null;  // Convert image to byte array
+            try {
+                imageData = imageFile.getBytes();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            sparePart.setImage(imageData);
+            sparePart.setFileType(imageFile.getContentType());// Set the image as binary data in the entity
+        }
         SparePart savedSparePart = sparePartRepository.save(sparePart);
 
       return savedSparePart;
     }
 
-    public List<SparePart> getAllSpareParts(){
-
+    public List<SparePartResponseDTO> getAllSpareParts() {
         List<SparePart> spareParts = sparePartRepository.findAll();
 
-        return spareParts;
+        return spareParts.stream().map(sparePart -> {
+            SparePartResponseDTO dto = new SparePartResponseDTO();
+            dto.setId(sparePart.getId());
+            dto.setPartName(sparePart.getPartName());
+            dto.setVehicleBrand(sparePart.getVehicleBrand());
+            dto.setVehicleModel(sparePart.getVehicleModel());
+            dto.setItemCode(sparePart.getItemCode());
+            dto.setPrice(sparePart.getPrice());
+            dto.setCreatedOn(sparePart.getCreatedOn());
 
+            // Assuming the SparePart entity has a BLOB field called 'image'
+            if (sparePart.getImage() != null) {
+                dto.setFileType(sparePart.getFileType()); // e.g., "image/jpeg"
+                dto.setData(Base64.getEncoder().encodeToString(sparePart.getImage())); // Base64 encoding
+            }
+
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     @Override
